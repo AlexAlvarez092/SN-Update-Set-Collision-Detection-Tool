@@ -8,6 +8,8 @@
 
 This small utility allows ServiceNow developers to detect collision between update set before moving them to the upper-level environment. Additionally, it is also possible to analyse a specific developing element such as a business rule, script include, etc.
 
+**Disclaimer** The utility relies on the release date attribute of an update set to identify which ones are already deployed to next environment. You can either manually set the release data every time you commit the update set to next environment or check out [this other application](https://github.com/AlexAlvarez092/SN-Update-Set-Release-Date) which automates that job.
+
 Features included:
 
 - Toggle on/off property allowing to disable the feature in the production environment.
@@ -17,7 +19,7 @@ Features included:
 # Installation
 
 - Option 1. Cloning repository
-- Option 2. Committing [update set](./releases/collision_detection_tool_100.xml)
+- Option 2. Committing [update set](./releases/collision_detection_tool_200.xml)
 
 ## System properties
 
@@ -33,11 +35,7 @@ Features included:
 
 ## UI Actions
 
-**`collision_detection_progress`**
-
-Ad-hoc run a scanner finding potential conflicts with other update sets.
-
-**`collision_detection_released`**
+**`collision_detection`**
 
 Ad-hoc run a scanner finding potential conflicts with other update sets.
 
