@@ -19,13 +19,7 @@ Features included:
 - Option 1. Cloning repository
 - Option 2. Committing [update set](./releases/collision_detection_tool_100.xml)
 
-## Technical solution
-
-### Script includes
-
-- `CollisionDetectionUtils()`: Contains the logic of the application.
-
-### System properties
+## System properties
 
 | Property name | Description |
 | ------------- | ----------- |
@@ -37,13 +31,7 @@ Features included:
 | `collision_detection.set.exclude_default` | Exclude update sets markes as default |
 | `collision_detection.set.exclude_updated_before` | Exclude update sets updated before |
 
-### UI Messages
-
-- `collision_detection.app_file.warning`: Warning message displayed when collisions were found (developing element).
-- `collision_detection.set.ok`: Confirmation message, no collisions found
-- `collision_detection.set.warning`: Warning message displayed when collisions were found (update set).
-
-### UI Actions
+## UI Actions
 
 **`collision_detection_progress`**
 
@@ -53,7 +41,7 @@ Ad-hoc run a scanner finding potential conflicts with other update sets.
 
 Ad-hoc run a scanner finding potential conflicts with other update sets.
 
-### Business Rules
+## Business Rules
 
 **`Collision detection [App file]`**
 
