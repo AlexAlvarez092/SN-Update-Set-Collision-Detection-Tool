@@ -30,7 +30,7 @@
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
 
     var utils = new CollisionDetectionUtils();
-    var res = utils.fileScanner(current.getUniqueValue());
+    var res = utils.fileScanner(current);
 
     if (res) {
         res.forEach(function (conflict) {
@@ -47,7 +47,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>bc2003e11ba30110be17a9b4bd4bcb62</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>Collision detection [App file]</sys_name>
         <sys_overrides/>
         <sys_package display_value="Update Set - Collision Detection Tool" source="a8cbf2ed1b630110be17a9b4bd4bcbf7">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_package>
@@ -55,7 +55,7 @@
         <sys_scope display_value="Update Set - Collision Detection Tool">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_scope>
         <sys_update_name>sys_script_bc2003e11ba30110be17a9b4bd4bcb62</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-04-20 08:51:41</sys_updated_on>
+        <sys_updated_on>2023-04-20 10:33:20</sys_updated_on>
         <template/>
         <when>before_display</when>
     </sys_script>
