@@ -11,13 +11,28 @@
 
 var CollisionDetectionUtils = Class.create();
 CollisionDetectionUtils.prototype = {
-    initialize: function () { },
+    initialize: function () {
+
+        this.APP_EXCLUDE_DEFAULT = gs.getProperty('collision_detection.app_file.exclude_default', 'false');
+        this.APP_EXCLUDE_COMPLETED_IGNORED = gs.getProperty('collision_detection.app_file.exclude_completed_ignored', 'false');
+        this.APP_EXCLUDE_MINE = gs.getProperty('collision_detection.app_file.exclude_your_own_sets', 'false');
+
+        this.SET_EXCLUDE_DEFAULT = gs.getProperty('collision_detection.set.exclude_default', 'false');
+        this.SET_EXCLUDE_BEFORE = gs.getProperty('collision_detection.set.exclude_updated_before', 'false');
+    },
 
     /**SNDOC
-        @name fileScanner
-        @description Scans a developing object such as business rules or ACLs (understanding developing object as every object stored in a table extending sys_metadata table) searching for potential conflicts with other update set(s) (there might be a conflict between two update sets whenever both of them are updating the same developing object, in such case, promoting one of them might include some pieces of code belonging to the other update set). Uses a bunch of system properties to include/exclude certain conditions such as exclude/include update sets marked as default or in state ignore. Returns an array of objects representing a conflictive update set (object include information about the owner, link to the record, when it was created, etc.).
-        @param {GlideRecord} [grInputRecord] - Extending sys_metadata table
-        @returns {Array<Object>} [{name:'',owner:'',created:'',url:''},{...}]
+        @name           fileScanner
+        @description    Scans a developing object such as business rules or ACLs (understanding developing object 
+                        as every object stored in a table extending sys_metadata table) searching for potential 
+                        conflicts with other update set(s) (there might be a conflict between two update sets whenever 
+                        both of them are updating the same developing object, in such case, promoting one of them might 
+                        include some pieces of code belonging to the other update set). Uses a bunch of system properties 
+                        to include/exclude certain conditions such as exclude/include update sets marked as default or in 
+                        state ignore. Returns an array of objects representing a conflictive update set (object include 
+                        information about the owner, link to the record, when it was created, etc.).
+        @param          {GlideRecord} [grInputRecord] - Extending sys_metadata table
+        @returns        {Array<Object>} [{name:'',owner:'',created:'',url:''},{...}]
     */
     fileScanner: function (grInputRecord) {
         try {
@@ -30,7 +45,7 @@ CollisionDetectionUtils.prototype = {
             var grFileVersion = new GlideRecord('sys_update_version');
             grFileVersion.addQuery('name', grInputRecord.getValue('sys_update_name'));
             grFileVersion.addQuery('state', 'current');
-            grFileVersion.orderByDesc("sys_created_on");
+            grFileVersion.orderByDesc('sys_created_on');
             grFileVersion.query();
 
             while (grFileVersion.next()) {
@@ -41,10 +56,6 @@ CollisionDetectionUtils.prototype = {
                     gs.logWarning('Invalid record: grUpdateSet => ' + JSON.stringify(grUpdateSet, null, 2), 'CollisionDetectionUtils.fileScanner()');
                     continue;
                 }
-
-                var excludeDefaultUpdateSet = gs.getProperty('collision_detection.app_file.exclude_default', 'false'); // string ["true", "false"]
-                var excludeCompleteOrIgnore = gs.getProperty('collision_detection.app_file.exclude_completed_ignored', 'false'); // string ["true", "false"]
-                var excludeYourownUpdateSets = gs.getProperty('collision_detection.app_file.exclude_your_own_sets', 'false'); // string ["true", "false"]
 
                 var currentUser = gs.getUser().getName();
                 var currentUpdateSet = gs.getPreference('sys_update_set');
@@ -57,15 +68,15 @@ CollisionDetectionUtils.prototype = {
                 var updateSetLink = grUpdateSet.getLink();
 
                 // Exclude default update set(s)
-                if (excludeDefaultUpdateSet === 'true' && updateSetName.toLowerCase().indexOf('default') === 0) 
+                if (this.APP_EXCLUDE_DEFAULT === 'true' && updateSetName.toLowerCase().indexOf('default') === 0)
                     continue;
 
                 // Exclude completed/ignored update set(s)
-                if (excludeCompleteOrIgnore === 'true' && updateSetState !== 'in progress')
+                if (this.APP_EXCLUDE_COMPLETED_IGNORED === 'true' && updateSetState !== 'in progress')
                     continue;
 
                 // Exclude your own update set(s)
-                if (excludeYourownUpdateSets === 'true' && currentUser === updateSetOwner)
+                if (this.AAP_EXCLUDE_MINE === 'true' && currentUser === updateSetOwner)
                     continue;
 
                 // Exclude current update set
@@ -94,97 +105,60 @@ CollisionDetectionUtils.prototype = {
     },
 
     /**SNDOC
-        @name setScanner
-        @description Scans an update set searching for potential conflics with other update set(s) (there might be a conflict between two update sets whenever both of them are updating the same developing object, in such case, promoting one of them might include some pieces of code belonging to the other update set). Uses a bunch of system properties to include/exclude certain conditions such as exclude/include update sets marked as default.
-        @param {GlideRecord} [grInputUpdateSet] - sys_update_set
-        @param {String} [inputQuery] - Encoded query such as "active=true^state=created"
-        @returns {Array<String>} sys_update_set.sys_id
+        @name           setScanner
+        @description    Scans an update set searching for potential conflics with other update set(s) 
+                        (there might be a conflict between two update sets whenever both of them are updating 
+                        the same developing object, in such case, promoting one of them might include some pieces 
+                        of code belonging to the other update set). Uses a bunch of system properties to 
+                        include/exclude certain conditions such as exclude/include update sets marked as default.
+        @param          {GlideRecord} [currentUpdateSetId] - sys_update_set.sys_id
+        @param          {String} [inputQuery] - Encoded query such as 'active=true^state=created'
+        @returns        {Array<String>} sys_update_set.sys_id
     */
-    setScanner: function (grInputUpdateSet) {
-        try {
-            if (gs.nil(grInputUpdateSet) || !grInputUpdateSet.isValidRecord()) 
-                throw new Error('Invalid parameter: grInputUpdateSet => ' + JSON.stringify(grInputUpdateSet, null, 2));
+    setScanner: function (currentUpdateSetId) {
 
-            var inputUpdateSetSysId = grInputUpdateSet.getUniqueValue();
+        var arrSysIds = [];
 
-            var arrSysIds = [];
+        var arrCustomerUpdates = this._getCustomerUpdates(currentUpdateSetId);
+        
+        var grUpdateSet = new GlideRecord('sys_update_set');
+        grUpdateSet.addNullQuery('release_date');
+        grUpdateSet.addQuery('sys_id', '!=', currentUpdateSetId); // Exclude itself
 
-            var excludeDefaultUpdateSet = gs.getProperty('collision_detection.set.exclude_default', 'false'); // string ["true", "false"]
-            var excludeUpdatedBefore = gs.getProperty('collision_detection.set.exclude_updated_before', 'false'); // string ["true", "false"]
+        // Exclude default
+        if (this.SET_EXCLUDE_DEFAULT === 'true')
+            grUpdateSet.addQuery('is_default', false);
 
-            var arrCustomerUpdates = this._getCustomerUpdates(grInputUpdateSet.getUniqueValue());
+        // Left join with customer updates tables
+        var grCustomerUpdate = grUpdateSet.addJoinQuery('sys_update_xml');
+        grCustomerUpdate.addOrCondition('name', arrCustomerUpdates.toString());
 
-            var grUpdateSet = new GlideRecord("sys_update_set");
+        grUpdateSet.query();
 
-            // Exclude default
-            if (excludeDefaultUpdateSet === 'true')
-                grUpdateSet.addQuery("is_default", false);
+        while (grUpdateSet.next())
+            arrSysIds.push(grUpdateSet.getUniqueValue());
 
-            // Exclude itself
-            grUpdateSet.addQuery("sys_id", "!=", inputUpdateSetSysId);
-
-            // Left join with customer updates table
-            var grCustomerUpdate = grUpdateSet.addJoinQuery("sys_update_xml");
-            grCustomerUpdate.addCondition("name", arrCustomerUpdates[0].name);
-
-            // Exclude customer updates updated before this one
-            if (excludeUpdatedBefore === "true") 
-                grCustomerUpdate.addCondition("sys_updated_on", ">", arrCustomerUpdates[0].updated);
-
-            // Exclude released update sets
-            grCustomerUpdate.addQuery('release_date', 'ISEMPTY');
-
-            for (var i = 1; i < arrCustomerUpdates.length; i++) {
-                var grCustomerUpdateOr = grCustomerUpdate.addOrCondition("name", arrCustomerUpdates[i].name);
-                if (excludeUpdatedBefore === "true") {
-                    grCustomerUpdateOr.addCondition("sys_updated_on", ">", arrCustomerUpdates[i].updated);
-                }
-            }
-
-            grUpdateSet.query();
-
-            while (grUpdateSet.next()) 
-                arrSysIds.push(grUpdateSet.getUniqueValue());
-
-            return arrSysIds;
-
-        } catch (e) {
-            gs.logError(JSON.stringify(e, null, 2), 'UpdateSetUtils._setScanner()');
-            return e;
-        }
+        return arrSysIds;
     },
 
     /**SNDOC
-        @name _getCustomerUpdates
-        @description Return the customer updates (represented by the field name) for a given update set.
-        @param {String} [updateSetSysId] - sys_update_set.sys_id
-        @returns {Array<String>} sys_update_xml.name
+        @name           _getCustomerUpdates
+        @description    Return the customer updates (represented by the field name) for a given update set.
+        @param          {String} [updateSetSysId] - sys_update_set.sys_id
+        @returns        {Array<String>} sys_update_xml.name
         @private
     */
     _getCustomerUpdates: function (updateSetSysId) {
-        try {
-            if (gs.nil(updateSetSysId))
-                throw new Error('Mandatory parameter: updateSetSysId => ' + JSON.stringify(updateSetSysId, null, 2));
+        var arrCustomerUpdates = [];
 
-            var arrCustomerUpdates = [];
+        new GlideQuery('sys_update_xml')
+            .where('update_set', updateSetSysId)
+            .select('name')
+            .forEach(function (customerUpdate) {
+                arrCustomerUpdates.push(customerUpdate.name);
+            });
 
-            var grCustomerUpdate = new GlideRecord("sys_update_xml");
-            grCustomerUpdate.addQuery("update_set", updateSetSysId);
-            grCustomerUpdate.query();
-
-            while (grCustomerUpdate.next()) {
-                arrCustomerUpdates.push({
-                    name: grCustomerUpdate.getValue('name'),
-                    updated: grCustomerUpdate.getValue('sys_updated_on')
-                });
-            }
-
-            return arrCustomerUpdates;
-
-        } catch (e) {
-            gs.logError(JSON.stringify(e, null, 2), 'CollisionDetectionUtils._getCustomerUpdates()');
-            return e;
-        }
+        return arrCustomerUpdates;
     },
 
     type: 'CollisionDetectionUtils'
@@ -193,10 +167,13 @@ CollisionDetectionUtils.prototype = {
         <sys_created_by>alealvar</sys_created_by>
         <sys_created_on>2022-05-19 00:58:35</sys_created_on>
         <sys_id>4bcc7aed1b630110be17a9b4bd4bcbb4</sys_id>
+        <sys_mod_count>6</sys_mod_count>
         <sys_name>CollisionDetectionUtils</sys_name>
         <sys_package display_value="Update Set - Collision Detection Tool" source="a8cbf2ed1b630110be17a9b4bd4bcbf7">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Update Set - Collision Detection Tool">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_scope>
         <sys_update_name>sys_script_include_4bcc7aed1b630110be17a9b4bd4bcbb4</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-04-20 10:21:34</sys_updated_on>
     </sys_script_include>
 </record_update>

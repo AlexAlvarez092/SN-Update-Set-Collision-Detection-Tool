@@ -11,11 +11,14 @@
         <sys_created_by>alealvar</sys_created_by>
         <sys_created_on>2022-05-19 01:01:54</sys_created_on>
         <sys_id>c96dfe211ba30110be17a9b4bd4bcbe8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>collision_detection.app_file.exclude_default</sys_name>
         <sys_package display_value="Update Set - Collision Detection Tool" source="a8cbf2ed1b630110be17a9b4bd4bcbf7">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Update Set - Collision Detection Tool">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_scope>
         <sys_update_name>sys_properties_c96dfe211ba30110be17a9b4bd4bcbe8</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-04-20 08:13:07</sys_updated_on>
         <type>boolean</type>
         <value>true</value>
         <write_roles>admin</write_roles>

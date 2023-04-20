@@ -31,14 +31,16 @@ collision_detection.set.ok</messages>
         <name>Conflicts detection</name>
         <onclick/>
         <order>10000</order>
-        <script><![CDATA[var ids = new CollisionDetectionUtils().setScanner(current);
+        <script><![CDATA[var ids = new CollisionDetectionUtils().setScanner(current.getUniqueValue());
 
 var msg = ids ?
     gs.getMessage("collision_detection.set.warning", ids.toString()) :
     gs.getMessage("collision_detection.set.ok");
 
 action.setRedirectURL(current);
-ids ? gs.addErrorMessage(msg) : gs.addInfoMessage(msg);]]></script>
+ids 
+	? gs.addErrorMessage(msg) 
+	: gs.addInfoMessage(msg);]]></script>
         <show_insert>true</show_insert>
         <show_multiple_update>false</show_multiple_update>
         <show_query>false</show_query>
@@ -49,12 +51,15 @@ ids ? gs.addErrorMessage(msg) : gs.addInfoMessage(msg);]]></script>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>d9b20ba51ba30110be17a9b4bd4bcbe9</sys_id>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>Conflicts detection</sys_name>
         <sys_overrides/>
         <sys_package display_value="Update Set - Collision Detection Tool" source="a8cbf2ed1b630110be17a9b4bd4bcbf7">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Update Set - Collision Detection Tool">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_scope>
         <sys_update_name>sys_ui_action_d9b20ba51ba30110be17a9b4bd4bcbe9</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-04-20 08:55:03</sys_updated_on>
         <table>sys_update_set</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>
