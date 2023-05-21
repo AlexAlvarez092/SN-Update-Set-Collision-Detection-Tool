@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="DELETE">
+        <choices/>
+        <description>Enable / disable the feature</description>
+        <ignore_cache>true</ignore_cache>
+        <is_private>false</is_private>
+        <name>collision_detection.set.active</name>
+        <read_roles/>
+        <suffix/>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>alealvar</sys_created_by>
+        <sys_created_on>2022-05-19 01:17:10</sys_created_on>
+        <sys_id>78f04f251ba30110be17a9b4bd4bcb05</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>collision_detection.set.active</sys_name>
+        <sys_package display_value="Update Set - Collision Detection Tool" source="a8cbf2ed1b630110be17a9b4bd4bcbf7">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Update Set - Collision Detection Tool">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_scope>
+        <sys_update_name>sys_properties_78f04f251ba30110be17a9b4bd4bcb05</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-04-20 08:13:06</sys_updated_on>
+        <type>boolean</type>
+        <value>true</value>
+        <write_roles>admin</write_roles>
+    </sys_properties>
+    <sys_translated_text action="DELETE" query="documentkey=78f04f251ba30110be17a9b4bd4bcb05"/>
+<sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Update Set - Collision Detection Tool">a8cbf2ed1b630110be17a9b4bd4bcbf7</application>
+        <file_path/>
+        <instance_id>379c8344db312ddcc9912f17d4961972</instance_id>
+        <instance_name>dev166702</instance_name>
+        <name>sys_properties_78f04f251ba30110be17a9b4bd4bcb05</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Enable / disable the feature</description>
+        <ignore_cache>true</ignore_cache>
+        <is_private>false</is_private>
+        <name>collision_detection.set.active</name>
+        <read_roles/>
+        <suffix/>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>alealvar</sys_created_by>
+        <sys_created_on>2022-05-19 01:17:10</sys_created_on>
+        <sys_id>78f04f251ba30110be17a9b4bd4bcb05</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>collision_detection.set.active</sys_name>
+        <sys_package display_value="Update Set - Collision Detection Tool" source="a8cbf2ed1b630110be17a9b4bd4bcbf7">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Update Set - Collision Detection Tool">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_scope>
+        <sys_update_name>sys_properties_78f04f251ba30110be17a9b4bd4bcb05</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-04-20 08:13:06</sys_updated_on>
+        <type>boolean</type>
+        <value>true</value>
+        <write_roles>admin</write_roles>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=78f04f251ba30110be17a9b4bd4bcb05"/>
+</record_update>]]></payload>
+        <payload_hash>1259291794</payload_hash>
+        <record_name>collision_detection.set.active</record_name>
+        <reverted_from/>
+        <source>e9320c0447c3611008606241e36d43b4</source>
+        <source_table>sys_upgrade_history</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-05-21 15:23:26</sys_created_on>
+        <sys_id>8a324c0447c3611008606241e36d4303</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1883ee887e40000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-05-21 15:23:26</sys_updated_on>
+        <type>System Property</type>
+        <update_guid>4a324c04d7c36110ed61ab1da3b49f03</update_guid>
+        <update_guid_history>4a324c04d7c36110ed61ab1da3b49f03:1259291794</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-05-21 16:37:30</sys_created_on>
+        <sys_db_object display_value="" name="sys_properties">sys_properties</sys_db_object>
+        <sys_id>1a55c23fb7a443389763d4e9ad45fc40</sys_id>
+        <sys_metadata>78f04f251ba30110be17a9b4bd4bcb05</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>collision_detection.set.active</sys_name>
+        <sys_package display_value="Update Set - Collision Detection Tool" source="a8cbf2ed1b630110be17a9b4bd4bcbf7">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Update Set - Collision Detection Tool">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_scope>
+        <sys_scope_delete display_value="">741c1326cb774940be4d4db615baa400</sys_scope_delete>
+        <sys_update_name>sys_properties_78f04f251ba30110be17a9b4bd4bcb05</sys_update_name>
+        <sys_update_version display_value="sys_properties_78f04f251ba30110be17a9b4bd4bcb05">8a324c0447c3611008606241e36d4303</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-05-21 16:37:30</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

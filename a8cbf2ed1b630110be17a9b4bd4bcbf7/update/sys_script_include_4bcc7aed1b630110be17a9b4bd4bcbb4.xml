@@ -2,192 +2,187 @@
     <sys_script_include action="INSERT_OR_UPDATE">
         <access>package_private</access>
         <active>true</active>
-        <api_name>global.CollisionDetectionUtils</api_name>
+        <api_name>global.CollisionUtils</api_name>
         <caller_access/>
         <client_callable>false</client_callable>
         <description/>
-        <name>CollisionDetectionUtils</name>
+        <name>CollisionUtils</name>
         <script><![CDATA[// Author: Alex Alvarez -- alexalvarez@mail.com
 
-var CollisionDetectionUtils = Class.create();
-CollisionDetectionUtils.prototype = {
-    initialize: function () {
+var CollisionUtils = {
 
-        this.APP_EXCLUDE_DEFAULT = gs.getProperty('collision_detection.app_file.exclude_default', 'false');
-        this.APP_EXCLUDE_COMPLETED_IGNORED = gs.getProperty('collision_detection.app_file.exclude_completed_ignored', 'false');
-        this.APP_EXCLUDE_MINE = gs.getProperty('collision_detection.app_file.exclude_your_own_sets', 'false');
+    checkCollisions: function(id) {
+        var arrUpdates, arrChildSets, arrChildUpdates, arrUnreleasedSets, arrUnreleasedUpdates,
+            intersection, warningMessages, grSet, grSetId, grSetBase, arrUtil;
 
-        this.SET_EXCLUDE_DEFAULT = gs.getProperty('collision_detection.set.exclude_default', 'false');
-        this.SET_EXCLUDE_BEFORE = gs.getProperty('collision_detection.set.exclude_updated_before', 'false');
-    },
+        arrUtil = new ArrayUtil();
 
-    /**SNDOC
-        @name           fileScanner
-        @description    Scans a developing object such as business rules or ACLs (understanding developing object 
-                        as every object stored in a table extending sys_metadata table) searching for potential 
-                        conflicts with other update set(s) (there might be a conflict between two update sets whenever 
-                        both of them are updating the same developing object, in such case, promoting one of them might 
-                        include some pieces of code belonging to the other update set). Uses a bunch of system properties 
-                        to include/exclude certain conditions such as exclude/include update sets marked as default or in 
-                        state ignore. Returns an array of objects representing a conflictive update set (object include 
-                        information about the owner, link to the record, when it was created, etc.).
-        @param          {GlideRecord} [grInputRecord] - Extending sys_metadata table
-        @returns        {Array<Object>} [{name:'',owner:'',created:'',url:''},{...}]
-    */
-    fileScanner: function (grInputRecord) {
-        var arrObjects = [];
+        grSet = new GlideRecord('sys_update_set');
+        grSet.get(id);
 
-        var grFileVersion = new GlideRecord('sys_update_version');
-        grFileVersion.addQuery('name', grInputRecord.getValue('sys_update_name'));
-        grFileVersion.addQuery('state', 'current');
-        grFileVersion.orderByDesc('sys_created_on');
-        grFileVersion.query();
+        grSetId = grSet.getUniqueValue();
+        grSetBase = grSet.getValue('base_update_set');
 
-        while (grFileVersion.next()) {
+        arrUpdates = CollisionUtils._getCustomerUpdates(grSetId);
 
-            var grUpdateSet = grFileVersion.source.getRefRecord();
+        // if it is a base update set, then include the customer updates of the childs
+        if (grSetBase === grSetId) {
+            arrChildSets = CollisionUtils._getChildUpdateSets(grSetId);
 
-            if (!grUpdateSet.isValidRecord()) {
-                gs.logWarning('Invalid record: grUpdateSet => ' + JSON.stringify(grUpdateSet, null, 2), 'CollisionDetectionUtils.fileScanner()');
-                continue;
+            arrChildSets.forEach(
+                function(childId) {
+                    arrChildUpdates = CollisionUtils._getCustomerUpdates(childId);
+                    arrUpdates = arrUtil.concat(arrUpdates, arrChildUpdates);
+                }
+            );
+        }
+
+        // Delete duplicates
+        arrUpdates = arrUtil.unique(arrUpdates);
+
+        // Get unreleased update sets excluding current and childs
+        arrUnreleasedSets = CollisionUtils._getUnreleasedUpdateSets(id, arrChildSets);
+
+        arrUnreleasedSets.forEach(
+            function(unreleasedSet) {
+                arrUnreleasedUpdates = CollisionUtils._getCustomerUpdates(unreleasedSet);
+                intersection = arrUtil.intersect(arrUnreleasedUpdates, arrUpdates);
+                if (intersection.length != 0) {
+                    warningMessages.push(CollisionUtils._formatCollision(arrChildSets, unreleasedSet, intersection));
+                }
             }
+        );
 
-            var currentUser = gs.getUser().getName();
-            var currentUpdateSet = gs.getPreference('sys_update_set');
+        return warningMessages;
+    },
 
-            var updateSetName = grUpdateSet.getValue('name');
-            var updateSetSysId = grUpdateSet.getUniqueValue();
-            var updateSetState = grUpdateSet.getValue('state');
-            var updateSetOwner = grUpdateSet.getValue('sys_created_by');
-            var updateSetCreatedOn = grUpdateSet.getValue('sys_created_on');
-            var updateSetLink = grUpdateSet.getLink();
+    _getCustomerUpdates: function(id) {
+        var arrUpdates, grUpdate, updateName;
 
-            // Exclude default update set(s)
-            if (this.APP_EXCLUDE_DEFAULT === 'true' && updateSetName.toLowerCase().indexOf('default') === 0)
-                continue;
+        grUpdate = new GlideRecord("sys_update_xml");
+        grUpdate.addQuery("update_set", id);
+        grUpdate.query();
 
-            // Exclude completed/ignored update set(s)
-            if (this.APP_EXCLUDE_COMPLETED_IGNORED === 'true' && updateSetState !== 'in progress')
-                continue;
-
-            // Exclude your own update set(s)
-            if (this.AAP_EXCLUDE_MINE === 'true' && currentUser === updateSetOwner)
-                continue;
-
-            // Exclude current update set
-            if (currentUpdateSet === updateSetSysId)
-                continue;
-
-            arrObjects.push({
-                name: updateSetName,
-                owner: updateSetOwner,
-                created: updateSetCreatedOn,
-                url: updateSetLink
-            });
+        while (grUpdate.next()) {
+            updateName = grUpdate.getValue("name");
+            arrUpdates.push(updateName);
         }
 
-        // Remove duplicate entries
-        var uniqueArray = arrObjects.filter(function (item, pos) {
-            return arrObjects.indexOf(item) == pos;
-        });
-
-        return uniqueArray;
+        return arrUpdates;
     },
 
-    /**SNDOC
-        @name           setScanner
-        @description    Scans an update set searching for potential conflics with other update set(s) 
-                        (there might be a conflict between two update sets whenever both of them are updating 
-                        the same developing object, in such case, promoting one of them might include some pieces 
-                        of code belonging to the other update set). Uses a bunch of system properties to 
-                        include/exclude certain conditions such as exclude/include update sets marked as default.
-        @param          {GlideRecord} [currentUpdateSet] - sys_update_set
-        @param          {String} [inputQuery] - Encoded query such as 'active=true^state=created'
-        @returns        {Array<String>} sys_update_set.sys_id
-    */
-    setScanner: function (currentUpdateSet) {
-        var currentUpdateSetId = currentUpdateSet.getUniqueValue();
-        var arrSysIds = [];
+    _getChildUpdateSets: function(id) {
+        var arrSets, grChild, childId;
 
-        var arrCustomerUpdates = this._getCustomerUpdates(currentUpdateSetId);
+        grChild = new GlideRecord('sys_update_set');
+        grChild.addQuery('base_update_set', id);
+        grChild.query();
 
-        var grUpdateSet = new GlideRecord('sys_update_set');
-        grUpdateSet.addNullQuery('release_date');
-        grUpdateSet.addQuery('sys_id', '!=', currentUpdateSetId); // Exclude itself
-
-        if (!currentUpdateSet.base_update_set.nil()) {
-            var baseUpdateSetId = currentUpdateSet.getValue('base_update_set');
-            var arrUpdateSetsInBatch = this._getUpdateSetsInBatch(baseUpdateSetId);
-            grUpdateSet.addQuery('sys_id', 'NOTIN', arrUpdateSetsInBatch.toString());
+        while (grChild.next()) {
+            childId = grChild.getUniqueValue();
+            arrSets.push(childId);
         }
 
-        // Exclude default
-        if (this.SET_EXCLUDE_DEFAULT === 'true')
-            grUpdateSet.addQuery('is_default', false);
-
-        // Left join with customer updates tables
-        var grCustomerUpdate = grUpdateSet.addJoinQuery('sys_update_xml');
-        grCustomerUpdate.addOrCondition('name', arrCustomerUpdates.toString());
-
-        grUpdateSet.query();
-
-        while (grUpdateSet.next())
-            arrSysIds.push(grUpdateSet.getUniqueValue());
-
-        return arrSysIds;
+        return arrSets;
     },
 
-    /**SNDOC
-        @name           _getCustomerUpdates
-        @description    Return the customer updates (represented by the field name) for a given update set.
-        @param          {String} [updateSetSysId] - sys_update_set.sys_id
-        @returns        {Array<String>} sys_update_xml.name
-        @private
-    */
-    _getCustomerUpdates: function (updateSetSysId) {
-        var arrCustomerUpdates = [];
+    _getUnreleasedUpdateSets: function(id, arrExcludedSets) {
+        var arrSets, grSet, setId;
 
-        new GlideQuery('sys_update_xml')
-            .where('update_set', updateSetSysId)
-            .select('name')
-            .forEach(function (customerUpdate) {
-                arrCustomerUpdates.push(customerUpdate.name);
-            });
+        grSet = new GlideRecord("sys_update_set");
+        grSet.addNullQuery("release_date");
+        grSet.addQuery("state", "!=", "ignore");
+        grSet.addQuery("is_default", false);
+        grSet.addQuery("sys_id", "!=", id);
 
-        return arrCustomerUpdates;
+        arrExcludedSets.forEach(
+            function(excludedId) {
+                grSet.addQuery('sys_id', '!=', excludedId);
+            }
+        );
+
+        grSet.query();
+
+        while (grSet.next()) {
+            setId = grSet.getUniqueValue();
+            arrSets.push(setId);
+        }
+
+        return arrSets;
     },
 
-    /**SNDOC
-        @name           _getUpdateSetsInBatch
-        @description    Return the list of update sets in a batch given the base update set
-        @param          {String} [baseUpdateSetId] - sys_update_set.sys_id
-        @returns        {Array<String>} sys_update_set.sys_id
-        @private
-    */
-    _getUpdateSetsInBatch: function (baseUpdateSetId) {
-        var arrUpdateSetsInBatch = [];
-        new GlideQuery('sys_update_set')
-            .where('base_update_set', baseUpdateSetId)
-            .forEach(function (updateSet) {
-                arrUpdateSetsInBatch.push(updateSet.sys_id);
-            });
+    _formatCollision: function(arrSets, arrUnreleasedSets, intersection) {
+        var arrBatchedSets, grUpdate, setId, message;
 
-        return arrUpdateSetsInBatch;
+        grUpdate = new GlideRecord('sys_update_xml');
+        grUpdate.addQuery('name', 'IN', intersection);
+        grUpdate.addQuery('update_set', 'IN', arrSets);
+        grUpdate.query();
+
+        while (grUpdate.next()) {
+            setId = grUpdate.getValue('update_set');
+            arrBatchedSets.push(setId);
+        }
+
+        message = "";
+
+        if (arrBatchedSets.length == 1) {
+            message = CollisionUtils._formatUpdateSetLink(arrBatchedSets[0]);
+        } else {
+            arrBatchedSets.forEach(
+                function(uset) {
+                    message += CollisionUtils._formatUpdateSetLink(uset) + ", ";
+                }
+            );
+        }
+
+        message += " has collisions with " + CollisionUtils._formatUpdateSetLink(arrUnreleasedSets) + " because of: ";
+
+        if (intersection.length == 1) {
+            message += CollisionUtils._formatCustomerUpdate(intersection[0]);
+        } else {
+            intersection.forEach(
+                function(inter) {
+                    message += CollisionUtils._formatCustomerUpdate(inter) + ", ";
+                }
+            );
+        }
+
+
+        return message;
     },
 
-    type: 'CollisionDetectionUtils'
+    _formatUpdateSetLink: function(id) {
+        var grUpdateSet, setDV;
+
+        grUpdateSet = new GlideRecord('sys_update_set');
+        grUpdateSet.get(id);
+
+        setDV = grUpdateSet.getDisplayValue();
+
+        return "<a target='_blank' href='sys_update_set.do?sys_id=" + id + "'>" + setDV + "</a>";
+    },
+
+    _formatCustomerUpdate: function(updateId) {
+        var recordTable, recordId;
+
+        recordTable = updateId.slice(0, -33);
+        recordId = updateId.slice(-32);
+
+        return "<a target='_blank' href='" + recordTable + ".do?sys_id=" + recordId + "'>" + updateId + "</a>";
+    },
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>alealvar</sys_created_by>
         <sys_created_on>2022-05-19 00:58:35</sys_created_on>
         <sys_id>4bcc7aed1b630110be17a9b4bd4bcbb4</sys_id>
-        <sys_mod_count>7</sys_mod_count>
-        <sys_name>CollisionDetectionUtils</sys_name>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>CollisionUtils</sys_name>
         <sys_package display_value="Update Set - Collision Detection Tool" source="a8cbf2ed1b630110be17a9b4bd4bcbf7">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Update Set - Collision Detection Tool">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_scope>
         <sys_update_name>sys_script_include_4bcc7aed1b630110be17a9b4bd4bcbb4</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-04-20 10:32:52</sys_updated_on>
+        <sys_updated_on>2023-05-21 16:39:33</sys_updated_on>
     </sys_script_include>
 </record_update>

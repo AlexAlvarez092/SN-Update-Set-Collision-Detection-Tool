@@ -12,7 +12,7 @@
         <change_fields>false</change_fields>
         <client_callable>false</client_callable>
         <collection>sys_update_set</collection>
-        <condition>gs.getProperty('collision_detection.set.active', 'false') === 'true'</condition>
+        <condition/>
         <description/>
         <execute_function>false</execute_function>
         <filter_condition table="sys_update_set">state=complete^release_dateISNOTEMPTY^EQ<item display_value="Complete" endquery="false" field="state" goto="false" newquery="false" operator="=" or="false" value="complete"/>
@@ -21,7 +21,7 @@
         </filter_condition>
         <is_rest>false</is_rest>
         <message/>
-        <name>Conflicts detection [Update set]</name>
+        <name>Check collisions</name>
         <order>10000</order>
         <priority>100</priority>
         <rest_method/>
@@ -32,12 +32,11 @@
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
 
-    var ids = CollisionDetectionUtils.setScanner(current);
+    var warningMessages = CollisionUtils.checkCollisions(current);
 
-    if (ids) {
-        var msg = gs.getMessage('collision_detection.set.warning', ids.toString());
-        gs.addErrorMessage(msg);
-    }
+    warningMessages.forEach(function(message) {
+        gs.addErrorMessage(message);
+    });
 
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -46,15 +45,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>58410f251ba30110be17a9b4bd4bcbf5</sys_id>
-        <sys_mod_count>2</sys_mod_count>
-        <sys_name>Conflicts detection [Update set]</sys_name>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Check collisions</sys_name>
         <sys_overrides/>
         <sys_package display_value="Update Set - Collision Detection Tool" source="a8cbf2ed1b630110be17a9b4bd4bcbf7">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Update Set - Collision Detection Tool">a8cbf2ed1b630110be17a9b4bd4bcbf7</sys_scope>
         <sys_update_name>sys_script_58410f251ba30110be17a9b4bd4bcbf5</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-04-20 10:33:48</sys_updated_on>
+        <sys_updated_on>2023-05-21 16:38:39</sys_updated_on>
         <template/>
         <when>before_display</when>
     </sys_script>
