@@ -34,36 +34,7 @@ Executing the tool over `Update set B` would return a collision with `Update set
 
 # Installation
 
-- Option 1. Cloning repository
-- Option 2. Committing [update set](./releases/collision_detection_tool_300.xml)
-
-## System properties
-
-| Property name | Description |
-| ------------- | ----------- |
-| `collision_detection.app_file.active` | Toggle on/off the feature (developing element) |
-| `collision_detection.app_file.exclude_completed_ignored` | Exclude update sets in states completed / ignored |
-| `collision_detection.app_file.exclude_default` | Exclude update sets markes as default |
-| `collision_detection.app_file.exclude_your_own_sets` | Exclude your own update sets |
-| `collision_detection.set.active` | Enable / disable the feature (update set) |
-| `collision_detection.set.exclude_default` | Exclude update sets markes as default |
-
-## UI Actions
-
-**`collision_detection`**
-
-Ad-hoc run a scanner finding potential conflicts with other update sets.
-
-## Business Rules
-
-**`Collision detection [App file]`**
-
-Automatically run a scanner finding potential conflicts with other update sets.
-
-**`Conflicts detection [Update set]`**
-
-Automatically run a scanner finding potential conflicts with other update sets.
-
+- Option 1. Clone repository
 
 [contributors-shield]: https://img.shields.io/github/contributors/AlexAlvarez092/SN-Update-Set-Collision-Detection-Tool.svg?style=for-the-badge
 [contributors-url]: https://github.com/AlexAlvarez092/SN-Update-Set-Collision-Detection-Tool/graphs/contributors
