@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2025-03-10 10:53:58">
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2025-03-10 11:36:30">
 <sys_remote_update_set action="INSERT_OR_UPDATE">
 <application display_value="Global">global</application>
 <application_name>Global</application_name>
@@ -20,15 +20,311 @@
 <summary/>
 <sys_class_name>sys_remote_update_set</sys_class_name>
 <sys_created_by>admin</sys_created_by>
-<sys_created_on>2025-03-10 10:53:57</sys_created_on>
-<sys_id>f734b48c8354661025f1e330ceaad315</sys_id>
+<sys_created_on>2025-03-10 11:36:29</sys_created_on>
+<sys_id>b6fd38088394661025f1e330ceaad36d</sys_id>
 <sys_mod_count>0</sys_mod_count>
 <sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2025-03-10 10:53:57</sys_updated_on>
+<sys_updated_on>2025-03-10 11:36:29</sys_updated_on>
 <update_set display_value=""/>
 <update_source display_value=""/>
 <updated/>
 </sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ws_definition_e72c30088394661025f1e330ceaad3e1</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_definition"><sys_ws_definition action="INSERT_OR_UPDATE"><active>true</active><base_uri>/api/680259/local_update_set</base_uri><consumes>application/json,application/xml,text/xml</consumes><consumes_customized>false</consumes_customized><default_version>v1</default_version><doc_link/><enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl><is_versioned>true</is_versioned><name>Local Update Set</name><namespace>680259</namespace><produces>application/json,application/xml,text/xml</produces><produces_customized>false</produces_customized><service_id>local_update_set</service_id><short_description/><sys_class_name>sys_ws_definition</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 11:28:59</sys_created_on><sys_id>e72c30088394661025f1e330ceaad3e1</sys_id><sys_mod_count>1</sys_mod_count><sys_name>Local Update Set</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ws_definition_e72c30088394661025f1e330ceaad3e1</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 11:30:02</sys_updated_on></sys_ws_definition></record_update>]]></payload>
+<payload_hash>-418180996</payload_hash>
+<remote_update_set display_value="Collisions tool - Source instance">b6fd38088394661025f1e330ceaad36d</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2025-03-10 11:36:29</sys_created_on>
+<sys_id>36fd38088394661025f1e330ceaad36f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1957fd1acb80000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2025-03-10 11:36:29</sys_updated_on>
+<table/>
+<target_name>Local Update Set</target_name>
+<type>Scripted REST API</type>
+<update_domain>global</update_domain>
+<update_guid>588cb8085e946610883814501fc3ab77</update_guid>
+<update_guid_history>588cb8085e946610883814501fc3ab77:-418180996,494cbcc468946610aa5e5ba6b44978b7:964857958</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sp_widget_208ed4808314661025f1e330ceaad332</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[api.controller = function(spUtil) {
+    let c = this;
+	c.updateSetName = '';
+    c.collisions = null;
+
+    c.server.get({
+        action: 'getData'
+    }).then(function(response) {
+		c.updateSetName = response.data.updateSetName;
+        c.collisions = response.data.collisions;
+    });
+};]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css/&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;collision-report&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]&gt;&lt;/link&gt;&lt;name&gt;Collision report&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+
+
+    if (input &amp;&amp; input.action == 'getData') {
+        
+		const updateSetSysId = String($sp.getParameter('sys_id'));
+        const grUpdateSet = _getUpdateSetRecord(updateSetSysId);
+
+        if (!grUpdateSet) return;
+
+
+        const updateSetData = CollisionsReportUtils.getData(updateSetSysId);
+        const collisions = CollisionsReportUtils.getCollisions(updateSetData);
+
+        data.updateSetName = grUpdateSet.getDisplayValue();
+        data.collisions = collisions;
+    }
+
+    function _getUpdateSetRecord(_updateSetSysId) {
+        const _grUpdateSet = new GlideRecord("sys_update_set");
+        return _grUpdateSet.get(_updateSetSysId) ? _grUpdateSet : null;
+    }
+
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-10 10:32:16&lt;/sys_created_on&gt;&lt;sys_id&gt;208ed4808314661025f1e330ceaad332&lt;/sys_id&gt;&lt;sys_mod_count&gt;4&lt;/sys_mod_count&gt;&lt;sys_name&gt;Collision report&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_208ed4808314661025f1e330ceaad332&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-10 10:52:43&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div&gt;
+  &lt;div&gt;
+    &lt;h1&gt;
+      &lt;span&gt;Update set: &lt;/span&gt;
+      &lt;span&gt;{{c.updateSetName}}&lt;/span&gt;
+    &lt;/h1&gt;
+    &lt;div ng-if="c.collisions == null"&gt;
+      &lt;span&gt;Loading...&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div ng-if="c.collisions.length == 0"&gt;
+      &lt;span&gt;No collisions found!&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div ng-if="c.collisions != null &amp;&amp; c.collisions.length != 0"&gt;
+      &lt;div&gt;
+        &lt;table class="table"&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th&gt;Update set&lt;/th&gt;
+              &lt;th&gt;Recorded at&lt;/th&gt;
+              &lt;th&gt;Collision with&lt;/th&gt;
+              &lt;th&gt;Collisioned at&lt;/th&gt;
+              &lt;th&gt;Element in collision&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr ng-repeat="collision in c.collisions"&gt;
+              &lt;td&gt;
+                &lt;a ng-href="sys_update_set.do?sys_id={{collision.set_sys_id}}" target="_blank"&gt;
+                  {{::collision.set_name}}
+                &lt;/a&gt;
+              &lt;/td&gt;
+              &lt;td&gt;{{::collision.update_updated_on}}&lt;/td&gt;
+              &lt;td&gt;
+                &lt;a ng-if="collision.collision_name"
+                   ng-href="sys_update_set.do?sys_id={{collision.collision_sys_id}}" target="_blank"&gt;
+                  {{::collision.collision_name}}
+                &lt;/a&gt;
+                &lt;span ng-if="!collision.collision_name"&gt;{{::collision.collision_sys_id}}&lt;/span&gt;
+              &lt;/td&gt;
+              &lt;td&gt;{{::collision.collision_recorded_at}}&lt;/td&gt;
+              &lt;td&gt;
+                &lt;span&gt;{{::collision.update_type}} &lt;/span&gt;
+                &lt;a ng-href="{{collision.update_name | limitTo : collision.update_name.length-33}}.do?sys_id={{collision.update_name | limitTo : -32 : end}}"
+                   target="_blank"&gt;
+                  {{::collision.update_target_name}}
+                &lt;/a&gt;
+              &lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;sys_es_latest_script action="INSERT_OR_UPDATE"&gt;&lt;id&gt;208ed4808314661025f1e330ceaad332&lt;/id&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-10 10:32:15&lt;/sys_created_on&gt;&lt;sys_id&gt;824fa8448354661025f1e330ceaad3a9&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-10 10:32:15&lt;/sys_updated_on&gt;&lt;table&gt;sp_widget&lt;/table&gt;&lt;use_es_latest&gt;true&lt;/use_es_latest&gt;&lt;/sys_es_latest_script&gt;&lt;/record_update&gt;</payload>
+<payload_hash>1993996940</payload_hash>
+<remote_update_set display_value="Collisions tool - Source instance">b6fd38088394661025f1e330ceaad36d</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2025-03-10 11:36:29</sys_created_on>
+<sys_id>3afd38088394661025f1e330ceaad36e</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1957faf82fc0000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2025-03-10 11:36:29</sys_updated_on>
+<table/>
+<target_name>Collision report</target_name>
+<type>Widget</type>
+<update_domain>global</update_domain>
+<update_guid>b5f3f0c8e45466108d9c764a605f4faf</update_guid>
+<update_guid_history>b5f3f0c8e45466108d9c764a605f4faf:1993996940,881270888b5466109e3f30c43971db2d:978142388,14617c48b35466103db2a4a70083c9c8:1292646013,3c11fc082d546610ce5bf40978dfbda4:-1671176851,824f24c443546610e6646c808bd03a34:665566878</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sp_container_257fa8448354661025f1e330ceaad379</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name/><container_class_name/><name>Collision report - Container 1</name><order>1</order><semantic_tag/><sp_page display_value="collision_report">475ed0808314661025f1e330ceaad39e</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 10:33:03</sys_created_on><sys_id>257fa8448354661025f1e330ceaad379</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Collision report - Container 1</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sp_container_257fa8448354661025f1e330ceaad379</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 10:33:03</sys_updated_on><title/><width>container</width></sp_container></record_update>]]></payload>
+<payload_hash>-1612336268</payload_hash>
+<remote_update_set display_value="Collisions tool - Source instance">b6fd38088394661025f1e330ceaad36d</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2025-03-10 11:36:29</sys_created_on>
+<sys_id>3efd38088394661025f1e330ceaad36d</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1957f9d7fa00000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2025-03-10 11:36:29</sys_updated_on>
+<table/>
+<target_name>Collision report - Container 1</target_name>
+<type>Container</type>
+<update_domain>global</update_domain>
+<update_guid>297fa844fa546610d9cdd732b7b86f7b</update_guid>
+<update_guid_history>297fa844fa546610d9cdd732b7b86f7b:-1612336268</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_role_359d54008314661025f1e330ceaad3e7</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_action_role"><sys_ui_action_role action="INSERT_OR_UPDATE"><sys_class_name>sys_ui_action_role</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 09:17:12</sys_created_on><sys_id>359d54008314661025f1e330ceaad3e7</sys_id><sys_mod_count>0</sys_mod_count><sys_name>.admin</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_ui_action display_value="">f49d50408314661025f1e330ceaad397</sys_ui_action><sys_update_name>sys_ui_action_role_359d54008314661025f1e330ceaad3e7</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 09:17:12</sys_updated_on><sys_user_role display_value="admin" name="admin">2831a114c611228501d4ea6c309d626d</sys_user_role></sys_ui_action_role></record_update>]]></payload>
+<payload_hash>-2042860094</payload_hash>
+<remote_update_set display_value="Collisions tool - Source instance">b6fd38088394661025f1e330ceaad36d</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2025-03-10 11:36:29</sys_created_on>
+<sys_id>72fd38088394661025f1e330ceaad36f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1957f58106f0000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2025-03-10 11:36:29</sys_updated_on>
+<table/>
+<target_name>.admin</target_name>
+<type>UI Action Role</type>
+<update_domain>global</update_domain>
+<update_guid>a21e140043146610f5f8ca5dea39d74f</update_guid>
+<update_guid_history>a21e140043146610f5f8ca5dea39d74f:-2042860094</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sp_row_177f24c48354661025f1e330ceaad37b</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_row"><sp_row action="INSERT_OR_UPDATE"><class_name/><order>1</order><semantic_tag/><sp_column/><sp_container display_value="Collision report - Container 1">257fa8448354661025f1e330ceaad379</sp_container><sys_class_name>sp_row</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 10:33:10</sys_created_on><sys_id>177f24c48354661025f1e330ceaad37b</sys_id><sys_mod_count>0</sys_mod_count><sys_name>1</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sp_row_177f24c48354661025f1e330ceaad37b</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 10:33:10</sys_updated_on></sp_row></record_update>]]></payload>
+<payload_hash>-1224576489</payload_hash>
+<remote_update_set display_value="Collisions tool - Source instance">b6fd38088394661025f1e330ceaad36d</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2025-03-10 11:36:29</sys_created_on>
+<sys_id>76fd38088394661025f1e330ceaad36e</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1957f9d9c8c0000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2025-03-10 11:36:29</sys_updated_on>
+<table/>
+<target_name>1</target_name>
+<type>Row</type>
+<update_domain>global</update_domain>
+<update_guid>537f24c450546610a84e0b8c95cf5d7d</update_guid>
+<update_guid_history>537f24c450546610a84e0b8c95cf5d7d:-1224576489</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sp_column_177f24c48354661025f1e330ceaad37e</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column"><sp_column action="INSERT_OR_UPDATE"><class_name/><order>1</order><semantic_tag/><size>12</size><size_lg/><size_sm/><size_xs/><sp_row display_value="1">177f24c48354661025f1e330ceaad37b</sp_row><sys_class_name>sp_column</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 10:33:10</sys_created_on><sys_id>177f24c48354661025f1e330ceaad37e</sys_id><sys_mod_count>0</sys_mod_count><sys_name>1</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sp_column_177f24c48354661025f1e330ceaad37e</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 10:33:10</sys_updated_on></sp_column></record_update>]]></payload>
+<payload_hash>1716036847</payload_hash>
+<remote_update_set display_value="Collisions tool - Source instance">b6fd38088394661025f1e330ceaad36d</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2025-03-10 11:36:29</sys_created_on>
+<sys_id>7afd38088394661025f1e330ceaad36d</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1957f9d9cca0000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2025-03-10 11:36:29</sys_updated_on>
+<table/>
+<target_name>1</target_name>
+<type>Column</type>
+<update_domain>global</update_domain>
+<update_guid>d77f28c4035466102bade29e79d808df</update_guid>
+<update_guid_history>d77f28c4035466102bade29e79d808df:1716036847</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sp_page_475ed0808314661025f1e330ceaad39e</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_page"><sp_page action="INSERT_OR_UPDATE"><category>custom</category><css/><draft>false</draft><dynamic_title_structure/><human_readable_url_structure/><id>collision_report</id><internal>false</internal><omit_watcher>false</omit_watcher><public>false</public><roles>admin</roles><seo_script/><short_description/><sys_class_name>sp_page</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 09:18:38</sys_created_on><sys_id>475ed0808314661025f1e330ceaad39e</sys_id><sys_mod_count>0</sys_mod_count><sys_name>collision_report</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sp_page_475ed0808314661025f1e330ceaad39e</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 09:18:38</sys_updated_on><title>Collision report</title><use_seo_script>false</use_seo_script></sp_page><sys_translated_text action="delete_multiple" query="documentkey=475ed0808314661025f1e330ceaad39e"/></record_update>]]></payload>
+<payload_hash>-1751566263</payload_hash>
+<remote_update_set display_value="Collisions tool - Source instance">b6fd38088394661025f1e330ceaad36d</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2025-03-10 11:36:29</sys_created_on>
+<sys_id>b2fd38088394661025f1e330ceaad36e</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1957f5960ab0000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2025-03-10 11:36:29</sys_updated_on>
+<table/>
+<target_name>collision_report</target_name>
+<type>Page</type>
+<update_domain>global</update_domain>
+<update_guid>e36e54800e146610729e50c689d8602c</update_guid>
+<update_guid_history>e36e54800e146610729e50c689d8602c:-1751566263</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ws_version_908c30088394661025f1e330ceaad322</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_version"><sys_ws_version action="INSERT_OR_UPDATE"><active>true</active><deprecated>false</deprecated><is_default>true</is_default><short_description/><sys_class_name>sys_ws_version</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 11:30:02</sys_created_on><sys_id>908c30088394661025f1e330ceaad322</sys_id><sys_mod_count>1</sys_mod_count><sys_name>v1</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ws_version_908c30088394661025f1e330ceaad322</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 11:30:02</sys_updated_on><version>1</version><version_id>v1</version_id><web_service_definition display_value="Local Update Set">e72c30088394661025f1e330ceaad3e1</web_service_definition></sys_ws_version></record_update>]]></payload>
+<payload_hash>90091649</payload_hash>
+<remote_update_set display_value="Collisions tool - Source instance">b6fd38088394661025f1e330ceaad36d</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2025-03-10 11:36:29</sys_created_on>
+<sys_id>bafd38088394661025f1e330ceaad36f</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1957fd1ac890000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2025-03-10 11:36:29</sys_updated_on>
+<table/>
+<target_name>v1</target_name>
+<type>Scripted REST Version</type>
+<update_domain>global</update_domain>
+<update_guid>148cb808ef946610c45c8d5992d7e474</update_guid>
+<update_guid_history>148cb808ef946610c45c8d5992d7e474:90091649,188c3008b3946610a88ef034b5b1c924:-1614371710</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
 <sys_update_xml action="INSERT_OR_UPDATE">
 <action>INSERT_OR_UPDATE</action>
 <application display_value="Global">global</application>
@@ -41,15 +337,15 @@
 	window.open('sp?id=collision_report&amp;sys_id=' + g_form.getUniqueValue(), '_blank');
 }]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-10 09:17:12&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;f49d50408314661025f1e330ceaad397&lt;/sys_id&gt;&lt;sys_mod_count&gt;2&lt;/sys_mod_count&gt;&lt;sys_name&gt;Check collisions&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_f49d50408314661025f1e330ceaad397&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-10 10:38:08&lt;/sys_updated_on&gt;&lt;table&gt;sys_update_set&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
 <payload_hash>-1108223587</payload_hash>
-<remote_update_set display_value="Collisions tool - Source instance">f734b48c8354661025f1e330ceaad315</remote_update_set>
+<remote_update_set display_value="Collisions tool - Source instance">b6fd38088394661025f1e330ceaad36d</remote_update_set>
 <replace_on_upgrade>false</replace_on_upgrade>
 <sys_created_by>admin</sys_created_by>
-<sys_created_on>2025-03-10 10:53:57</sys_created_on>
-<sys_id>3734b48c8354661025f1e330ceaad317</sys_id>
+<sys_created_on>2025-03-10 11:36:29</sys_created_on>
+<sys_id>befd38088394661025f1e330ceaad36e</sys_id>
 <sys_mod_count>0</sys_mod_count>
 <sys_recorded_at>1957fa228b00000001</sys_recorded_at>
 <sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2025-03-10 10:53:57</sys_updated_on>
+<sys_updated_on>2025-03-10 11:36:29</sys_updated_on>
 <table>sys_update_set</table>
 <target_name>Check collisions</target_name>
 <type>UI Action</type>
@@ -64,24 +360,44 @@
 <application display_value="Global">global</application>
 <category>customer</category>
 <comments/>
-<name>sp_page_475ed0808314661025f1e330ceaad39e</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_page"><sp_page action="INSERT_OR_UPDATE"><category>custom</category><css/><draft>false</draft><dynamic_title_structure/><human_readable_url_structure/><id>collision_report</id><internal>false</internal><omit_watcher>false</omit_watcher><public>false</public><roles>admin</roles><seo_script/><short_description/><sys_class_name>sp_page</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 09:18:38</sys_created_on><sys_id>475ed0808314661025f1e330ceaad39e</sys_id><sys_mod_count>0</sys_mod_count><sys_name>collision_report</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sp_page_475ed0808314661025f1e330ceaad39e</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 09:18:38</sys_updated_on><title>Collision report</title><use_seo_script>false</use_seo_script></sp_page><sys_translated_text action="delete_multiple" query="documentkey=475ed0808314661025f1e330ceaad39e"/></record_update>]]></payload>
-<payload_hash>-1751566263</payload_hash>
-<remote_update_set display_value="Collisions tool - Source instance">f734b48c8354661025f1e330ceaad315</remote_update_set>
+<name>sys_ws_operation_849c3c088394661025f1e330ceaad389</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ws_operation"&gt;&lt;sys_ws_operation action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;consumes&gt;application/json,application/xml,text/xml&lt;/consumes&gt;&lt;consumes_customized&gt;false&lt;/consumes_customized&gt;&lt;default_operation_uri&gt;/api/680259/local_update_set&lt;/default_operation_uri&gt;&lt;enforce_acl&gt;cf9d01d3e73003009d6247e603f6a990&lt;/enforce_acl&gt;&lt;http_method&gt;PATCH&lt;/http_method&gt;&lt;name&gt;PATH Release date&lt;/name&gt;&lt;operation_script&gt;&lt;![CDATA[(function process( /*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+
+    const sysId = request.pathParams.id.toString()
+    const timestamp = request.body.data.timestamp.toString();
+
+    if (!id) return new sn_ws_err.BadRequestError("Id is mandatory");
+    if (!timestamp) return new sn_ws_err.BadRequestError("Release date is mandatory");
+
+    const gdtReleaseDate = new GlideDateTime();
+    gdtReleaseDate.setValue(timestamp);
+
+    const grUpdateSet = new GlideRecord("sys_update_set");
+    if (!grUpdateSet.get(id)) new sn_ws_err.BadRequestError("Id not found");
+
+    grUpdateSet.autoSysFields(false);
+    grUpdateSet.setWorkflow(false);
+
+    grUpdateSet.setValue("release_date", gdtReleaseDate.getValue());
+    grUpdateSet.update();
+
+})(request, response);]]&gt;&lt;/operation_script&gt;&lt;operation_uri&gt;/api/680259/v1/local_update_set&lt;/operation_uri&gt;&lt;produces&gt;application/json,application/xml,text/xml&lt;/produces&gt;&lt;produces_customized&gt;false&lt;/produces_customized&gt;&lt;relative_path&gt;/&lt;/relative_path&gt;&lt;request_example/&gt;&lt;requires_acl_authorization&gt;true&lt;/requires_acl_authorization&gt;&lt;requires_authentication&gt;true&lt;/requires_authentication&gt;&lt;requires_snc_internal_role&gt;true&lt;/requires_snc_internal_role&gt;&lt;short_description/&gt;&lt;sys_class_name&gt;sys_ws_operation&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-10 11:36:03&lt;/sys_created_on&gt;&lt;sys_id&gt;849c3c088394661025f1e330ceaad389&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;PATH Release date&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ws_operation_849c3c088394661025f1e330ceaad389&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-10 11:36:03&lt;/sys_updated_on&gt;&lt;web_service_definition display_value="Local Update Set"&gt;e72c30088394661025f1e330ceaad3e1&lt;/web_service_definition&gt;&lt;web_service_version display_value="v1"&gt;908c30088394661025f1e330ceaad322&lt;/web_service_version&gt;&lt;/sys_ws_operation&gt;&lt;sys_es_latest_script action="INSERT_OR_UPDATE"&gt;&lt;id&gt;849c3c088394661025f1e330ceaad389&lt;/id&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-10 11:36:03&lt;/sys_created_on&gt;&lt;sys_id&gt;68ed38088394661025f1e330ceaad320&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-10 11:36:03&lt;/sys_updated_on&gt;&lt;table&gt;sys_ws_operation&lt;/table&gt;&lt;use_es_latest&gt;true&lt;/use_es_latest&gt;&lt;/sys_es_latest_script&gt;&lt;/record_update&gt;</payload>
+<payload_hash>1563997588</payload_hash>
+<remote_update_set display_value="Collisions tool - Source instance">b6fd38088394661025f1e330ceaad36d</remote_update_set>
 <replace_on_upgrade>false</replace_on_upgrade>
 <sys_created_by>admin</sys_created_by>
-<sys_created_on>2025-03-10 10:53:57</sys_created_on>
-<sys_id>3b34b48c8354661025f1e330ceaad316</sys_id>
+<sys_created_on>2025-03-10 11:36:29</sys_created_on>
+<sys_id>f6fd38088394661025f1e330ceaad36f</sys_id>
 <sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>1957f5960ab0000001</sys_recorded_at>
+<sys_recorded_at>1957fd731110000001</sys_recorded_at>
 <sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2025-03-10 10:53:57</sys_updated_on>
+<sys_updated_on>2025-03-10 11:36:29</sys_updated_on>
 <table/>
-<target_name>collision_report</target_name>
-<type>Page</type>
+<target_name>PATH Release date</target_name>
+<type>Scripted REST Resource</type>
 <update_domain>global</update_domain>
-<update_guid>e36e54800e146610729e50c689d8602c</update_guid>
-<update_guid_history>e36e54800e146610729e50c689d8602c:-1751566263</update_guid_history>
+<update_guid>20edf408d7946610959deba56bbccb5e</update_guid>
+<update_guid_history>20edf408d7946610959deba56bbccb5e:1563997588</update_guid_history>
 <update_set display_value=""/>
 <view/>
 </sys_update_xml>
@@ -264,15 +580,15 @@
     },
 };]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_include&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-10 10:26:35&lt;/sys_created_on&gt;&lt;sys_id&gt;4db8e0cc8314661025f1e330ceaad35b&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;CollisionsReportUtils&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_include_4db8e0cc8314661025f1e330ceaad35b&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-10 10:26:35&lt;/sys_updated_on&gt;&lt;/sys_script_include&gt;&lt;sys_es_latest_script action="INSERT_OR_UPDATE"&gt;&lt;id&gt;4db8e0cc8314661025f1e330ceaad35b&lt;/id&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-10 10:26:35&lt;/sys_created_on&gt;&lt;sys_id&gt;72fda8448354661025f1e330ceaad34f&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-10 10:26:35&lt;/sys_updated_on&gt;&lt;table&gt;sys_script_include&lt;/table&gt;&lt;use_es_latest&gt;true&lt;/use_es_latest&gt;&lt;/sys_es_latest_script&gt;&lt;/record_update&gt;</payload>
 <payload_hash>-244851707</payload_hash>
-<remote_update_set display_value="Collisions tool - Source instance">f734b48c8354661025f1e330ceaad315</remote_update_set>
+<remote_update_set display_value="Collisions tool - Source instance">b6fd38088394661025f1e330ceaad36d</remote_update_set>
 <replace_on_upgrade>false</replace_on_upgrade>
 <sys_created_by>admin</sys_created_by>
-<sys_created_on>2025-03-10 10:53:57</sys_created_on>
-<sys_id>7334b48c8354661025f1e330ceaad317</sys_id>
+<sys_created_on>2025-03-10 11:36:29</sys_created_on>
+<sys_id>fafd38088394661025f1e330ceaad36e</sys_id>
 <sys_mod_count>0</sys_mod_count>
 <sys_recorded_at>1957f9797bc0000001</sys_recorded_at>
 <sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2025-03-10 10:53:57</sys_updated_on>
+<sys_updated_on>2025-03-10 11:36:29</sys_updated_on>
 <table/>
 <target_name>CollisionsReportUtils</target_name>
 <type>Script Include</type>
@@ -290,239 +606,21 @@
 <name>sp_instance_b77fa8448354661025f1e330ceaad355</name>
 <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance"><sp_instance action="INSERT_OR_UPDATE"><active>true</active><class_name/><color>default</color><css/><glyph/><id/><order>1</order><roles/><short_description/><size>md</size><sp_column display_value="1">177f24c48354661025f1e330ceaad37e</sp_column><sp_widget display_value="Collision report">208ed4808314661025f1e330ceaad332</sp_widget><sys_class_name>sp_instance</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 10:33:12</sys_created_on><sys_id>b77fa8448354661025f1e330ceaad355</sys_id><sys_mod_count>0</sys_mod_count><sys_name/><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sp_instance_b77fa8448354661025f1e330ceaad355</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 10:33:12</sys_updated_on><title/><url/><widget_parameters/></sp_instance><sys_translated_text action="delete_multiple" query="documentkey=b77fa8448354661025f1e330ceaad355"/></record_update>]]></payload>
 <payload_hash>1081256473</payload_hash>
-<remote_update_set display_value="Collisions tool - Source instance">f734b48c8354661025f1e330ceaad315</remote_update_set>
+<remote_update_set display_value="Collisions tool - Source instance">b6fd38088394661025f1e330ceaad36d</remote_update_set>
 <replace_on_upgrade>false</replace_on_upgrade>
 <sys_created_by>admin</sys_created_by>
-<sys_created_on>2025-03-10 10:53:57</sys_created_on>
-<sys_id>7734b48c8354661025f1e330ceaad316</sys_id>
+<sys_created_on>2025-03-10 11:36:29</sys_created_on>
+<sys_id>fefd38088394661025f1e330ceaad36d</sys_id>
 <sys_mod_count>0</sys_mod_count>
 <sys_recorded_at>1957f9da5620000001</sys_recorded_at>
 <sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2025-03-10 10:53:57</sys_updated_on>
+<sys_updated_on>2025-03-10 11:36:29</sys_updated_on>
 <table/>
 <target_name/>
 <type>Instance</type>
 <update_domain>global</update_domain>
 <update_guid>3f7fa844455466102a717a323c8c1757</update_guid>
 <update_guid_history>3f7fa844455466102a717a323c8c1757:1081256473</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sp_container_257fa8448354661025f1e330ceaad379</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name/><container_class_name/><name>Collision report - Container 1</name><order>1</order><semantic_tag/><sp_page display_value="collision_report">475ed0808314661025f1e330ceaad39e</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 10:33:03</sys_created_on><sys_id>257fa8448354661025f1e330ceaad379</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Collision report - Container 1</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sp_container_257fa8448354661025f1e330ceaad379</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 10:33:03</sys_updated_on><title/><width>container</width></sp_container></record_update>]]></payload>
-<payload_hash>-1612336268</payload_hash>
-<remote_update_set display_value="Collisions tool - Source instance">f734b48c8354661025f1e330ceaad315</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2025-03-10 10:53:57</sys_created_on>
-<sys_id>b334b48c8354661025f1e330ceaad316</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>1957f9d7fa00000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2025-03-10 10:53:57</sys_updated_on>
-<table/>
-<target_name>Collision report - Container 1</target_name>
-<type>Container</type>
-<update_domain>global</update_domain>
-<update_guid>297fa844fa546610d9cdd732b7b86f7b</update_guid>
-<update_guid_history>297fa844fa546610d9cdd732b7b86f7b:-1612336268</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sp_column_177f24c48354661025f1e330ceaad37e</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column"><sp_column action="INSERT_OR_UPDATE"><class_name/><order>1</order><semantic_tag/><size>12</size><size_lg/><size_sm/><size_xs/><sp_row display_value="1">177f24c48354661025f1e330ceaad37b</sp_row><sys_class_name>sp_column</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 10:33:10</sys_created_on><sys_id>177f24c48354661025f1e330ceaad37e</sys_id><sys_mod_count>0</sys_mod_count><sys_name>1</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sp_column_177f24c48354661025f1e330ceaad37e</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 10:33:10</sys_updated_on></sp_column></record_update>]]></payload>
-<payload_hash>1716036847</payload_hash>
-<remote_update_set display_value="Collisions tool - Source instance">f734b48c8354661025f1e330ceaad315</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2025-03-10 10:53:57</sys_created_on>
-<sys_id>bb34b48c8354661025f1e330ceaad315</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>1957f9d9cca0000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2025-03-10 10:53:57</sys_updated_on>
-<table/>
-<target_name>1</target_name>
-<type>Column</type>
-<update_domain>global</update_domain>
-<update_guid>d77f28c4035466102bade29e79d808df</update_guid>
-<update_guid_history>d77f28c4035466102bade29e79d808df:1716036847</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sp_widget_208ed4808314661025f1e330ceaad332</name>
-<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[api.controller = function(spUtil) {
-    let c = this;
-	c.updateSetName = '';
-    c.collisions = null;
-
-    c.server.get({
-        action: 'getData'
-    }).then(function(response) {
-		c.updateSetName = response.data.updateSetName;
-        c.collisions = response.data.collisions;
-    });
-};]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css/&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;collision-report&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {
-  
-}]]&gt;&lt;/link&gt;&lt;name&gt;Collision report&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
-
-
-    if (input &amp;&amp; input.action == 'getData') {
-        
-		const updateSetSysId = String($sp.getParameter('sys_id'));
-        const grUpdateSet = _getUpdateSetRecord(updateSetSysId);
-
-        if (!grUpdateSet) return;
-
-
-        const updateSetData = CollisionsReportUtils.getData(updateSetSysId);
-        const collisions = CollisionsReportUtils.getCollisions(updateSetData);
-
-        data.updateSetName = grUpdateSet.getDisplayValue();
-        data.collisions = collisions;
-    }
-
-    function _getUpdateSetRecord(_updateSetSysId) {
-        const _grUpdateSet = new GlideRecord("sys_update_set");
-        return _grUpdateSet.get(_updateSetSysId) ? _grUpdateSet : null;
-    }
-
-})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-10 10:32:16&lt;/sys_created_on&gt;&lt;sys_id&gt;208ed4808314661025f1e330ceaad332&lt;/sys_id&gt;&lt;sys_mod_count&gt;4&lt;/sys_mod_count&gt;&lt;sys_name&gt;Collision report&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_208ed4808314661025f1e330ceaad332&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-10 10:52:43&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div&gt;
-  &lt;div&gt;
-    &lt;h1&gt;
-      &lt;span&gt;Update set: &lt;/span&gt;
-      &lt;span&gt;{{c.updateSetName}}&lt;/span&gt;
-    &lt;/h1&gt;
-    &lt;div ng-if="c.collisions == null"&gt;
-      &lt;span&gt;Loading...&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;div ng-if="c.collisions.length == 0"&gt;
-      &lt;span&gt;No collisions found!&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;div ng-if="c.collisions != null &amp;&amp; c.collisions.length != 0"&gt;
-      &lt;div&gt;
-        &lt;table class="table"&gt;
-          &lt;thead&gt;
-            &lt;tr&gt;
-              &lt;th&gt;Update set&lt;/th&gt;
-              &lt;th&gt;Recorded at&lt;/th&gt;
-              &lt;th&gt;Collision with&lt;/th&gt;
-              &lt;th&gt;Collisioned at&lt;/th&gt;
-              &lt;th&gt;Element in collision&lt;/th&gt;
-            &lt;/tr&gt;
-          &lt;/thead&gt;
-          &lt;tbody&gt;
-            &lt;tr ng-repeat="collision in c.collisions"&gt;
-              &lt;td&gt;
-                &lt;a ng-href="sys_update_set.do?sys_id={{collision.set_sys_id}}" target="_blank"&gt;
-                  {{::collision.set_name}}
-                &lt;/a&gt;
-              &lt;/td&gt;
-              &lt;td&gt;{{::collision.update_updated_on}}&lt;/td&gt;
-              &lt;td&gt;
-                &lt;a ng-if="collision.collision_name"
-                   ng-href="sys_update_set.do?sys_id={{collision.collision_sys_id}}" target="_blank"&gt;
-                  {{::collision.collision_name}}
-                &lt;/a&gt;
-                &lt;span ng-if="!collision.collision_name"&gt;{{::collision.collision_sys_id}}&lt;/span&gt;
-              &lt;/td&gt;
-              &lt;td&gt;{{::collision.collision_recorded_at}}&lt;/td&gt;
-              &lt;td&gt;
-                &lt;span&gt;{{::collision.update_type}} &lt;/span&gt;
-                &lt;a ng-href="{{collision.update_name | limitTo : collision.update_name.length-33}}.do?sys_id={{collision.update_name | limitTo : -32 : end}}"
-                   target="_blank"&gt;
-                  {{::collision.update_target_name}}
-                &lt;/a&gt;
-              &lt;/td&gt;
-            &lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;sys_es_latest_script action="INSERT_OR_UPDATE"&gt;&lt;id&gt;208ed4808314661025f1e330ceaad332&lt;/id&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-10 10:32:15&lt;/sys_created_on&gt;&lt;sys_id&gt;824fa8448354661025f1e330ceaad3a9&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-10 10:32:15&lt;/sys_updated_on&gt;&lt;table&gt;sp_widget&lt;/table&gt;&lt;use_es_latest&gt;true&lt;/use_es_latest&gt;&lt;/sys_es_latest_script&gt;&lt;/record_update&gt;</payload>
-<payload_hash>1993996940</payload_hash>
-<remote_update_set display_value="Collisions tool - Source instance">f734b48c8354661025f1e330ceaad315</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2025-03-10 10:53:57</sys_created_on>
-<sys_id>bf34b48c8354661025f1e330ceaad316</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>1957faf82fc0000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2025-03-10 10:53:57</sys_updated_on>
-<table/>
-<target_name>Collision report</target_name>
-<type>Widget</type>
-<update_domain>global</update_domain>
-<update_guid>b5f3f0c8e45466108d9c764a605f4faf</update_guid>
-<update_guid_history>b5f3f0c8e45466108d9c764a605f4faf:1993996940,881270888b5466109e3f30c43971db2d:978142388,14617c48b35466103db2a4a70083c9c8:1292646013,3c11fc082d546610ce5bf40978dfbda4:-1671176851,824f24c443546610e6646c808bd03a34:665566878</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_ui_action_role_359d54008314661025f1e330ceaad3e7</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_action_role"><sys_ui_action_role action="INSERT_OR_UPDATE"><sys_class_name>sys_ui_action_role</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 09:17:12</sys_created_on><sys_id>359d54008314661025f1e330ceaad3e7</sys_id><sys_mod_count>0</sys_mod_count><sys_name>.admin</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_ui_action display_value="">f49d50408314661025f1e330ceaad397</sys_ui_action><sys_update_name>sys_ui_action_role_359d54008314661025f1e330ceaad3e7</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 09:17:12</sys_updated_on><sys_user_role display_value="admin" name="admin">2831a114c611228501d4ea6c309d626d</sys_user_role></sys_ui_action_role></record_update>]]></payload>
-<payload_hash>-2042860094</payload_hash>
-<remote_update_set display_value="Collisions tool - Source instance">f734b48c8354661025f1e330ceaad315</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2025-03-10 10:53:57</sys_created_on>
-<sys_id>f734b48c8354661025f1e330ceaad317</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>1957f58106f0000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2025-03-10 10:53:57</sys_updated_on>
-<table/>
-<target_name>.admin</target_name>
-<type>UI Action Role</type>
-<update_domain>global</update_domain>
-<update_guid>a21e140043146610f5f8ca5dea39d74f</update_guid>
-<update_guid_history>a21e140043146610f5f8ca5dea39d74f:-2042860094</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sp_row_177f24c48354661025f1e330ceaad37b</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_row"><sp_row action="INSERT_OR_UPDATE"><class_name/><order>1</order><semantic_tag/><sp_column/><sp_container display_value="Collision report - Container 1">257fa8448354661025f1e330ceaad379</sp_container><sys_class_name>sp_row</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 10:33:10</sys_created_on><sys_id>177f24c48354661025f1e330ceaad37b</sys_id><sys_mod_count>0</sys_mod_count><sys_name>1</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sp_row_177f24c48354661025f1e330ceaad37b</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 10:33:10</sys_updated_on></sp_row></record_update>]]></payload>
-<payload_hash>-1224576489</payload_hash>
-<remote_update_set display_value="Collisions tool - Source instance">f734b48c8354661025f1e330ceaad315</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2025-03-10 10:53:57</sys_created_on>
-<sys_id>fb34b48c8354661025f1e330ceaad316</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>1957f9d9c8c0000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2025-03-10 10:53:57</sys_updated_on>
-<table/>
-<target_name>1</target_name>
-<type>Row</type>
-<update_domain>global</update_domain>
-<update_guid>537f24c450546610a84e0b8c95cf5d7d</update_guid>
-<update_guid_history>537f24c450546610a84e0b8c95cf5d7d:-1224576489</update_guid_history>
 <update_set display_value=""/>
 <view/>
 </sys_update_xml>
