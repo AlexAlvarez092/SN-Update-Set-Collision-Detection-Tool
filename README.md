@@ -1,4 +1,4 @@
-# Update Set - Collision detection tool
+# 📌 Update Set - Collision detection tool
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -6,35 +6,63 @@
 [![Issues][issues-shield]][issues-url]
 [![license-shield]][license-url]
 
-This small utility allows ServiceNow developers to detect collision between update set before moving them to the upper-level environment. Additionally, it is also possible to analyse a specific developing element such as a business rule, script include, etc.
+## 📝 Overview
 
-> **Disclaimer** The utility relies on the release date attribute of an update set to identify which ones are already deployed to next environment. You can either manually set the release data every time you commit the update set to next environment or check out [this other application](https://github.com/AlexAlvarez092/SN-Update-Set-Release-Date) which automates that job.
+The **Update Set - Collision detection tool** is a ServiceNow enhancement that allows users to identify potential collisions between update sets before committing them. A collision occurs when an update set modifies the same elements as another update set that has not yet been committed in the next instance (e.g., from Dev to Test or Test to Prod).
 
-## Features included
+### ✨ Features
 
-- Toggle on/off property allowing to disable the feature in the production environment.
-- Analyse an update set which would be moved to the upper-level environment.
-- Analyse a developing object which would be moved to the upper-level environment.
-- Exclude out update sets already committed to upper-level environment.
-- Exclude out update sets within the same batch.
+- **UI Action:** Adds a related link to update sets, enabling users to check for collisions.
+- **Service Portal Widget:** Displays a report of conflicting update sets.
+- **Automated Release Tracking:** Uses a REST integration to mark update sets as committed in the source instance.
+- **Collision Filtering:**
+  - Ignores default update sets.
+  - Ignores update sets marked as "ignored."
+  - Excludes update sets that were overridden by a later committed update set.
 
-## Limitations
+###  How It Works
 
-The tool just finds update sets not yet delivered and not included in the same batch (if there is a batch...) than the update set in-hand that are touching the same configuration objects, but the tool do not check which one has update before or after the configuration object, therefore it is possible false positves.
+1. The UI Action triggers a Service Portal widget that checks for collisions.
+2. A **Script Include** scans the update set for modifications that overlap with another update set that has not been committed.
+3. The logic considers an update set as "committed" if its **release_date** field is set.
+4. When an update set is committed, a **Business Rule** triggers an event.
+5. A **Script Action** listens for the event and calls a **REST API** on the next instance, marking the update set as committed.
 
-### Example
+## 📂 Installation
 
-Business rule `My business rule` has three versions in the following order:
+1. Import and commit both update sets from this repository:
+   - [CollisionToolSourceInstance.xml](./CollisionToolSourceInstance.xml): Includes the UI Action, Service Portal widget, and Script Include.
+   - [CollisionToolTargetInstance.xml](./CollisionToolTargetInstance.xml): Contains the Business Rule and REST integration.
+2. Ensure proper user permissions to access the Service Portal widget.
 
-1. Update set `Update set A` which has been delivered in the next environment.
-2. Update set `Update set B` which has not been delivered yet.
-3. Update set `Update set C` which has not been delivered yet.
+## 🚀 Usage
 
-Executing the tool over `Update set B` would return a collision with `Update set C`. In fact this is a false positive as the version `Update set C` was created only after the version `Update set B` thus moving `Update set B` is safe.
+1. Navigate to an update set.
+2. Click the "Check for Collisions" related link.
+3. Review the list of conflicting update sets.
+4. If necessary, resolve conflicts before committing the update set.
 
-# Installation
+## Technical Details
 
-- Option 1. Clone repository
+- **Collision Detection Logic:**
+  - Extracts all **customer updates** (modifications) from the update set.
+  - Checks if any of these updates exist in another update set that is pending commit.
+  - Uses the **sys_update_version** table to compare versions and determine conflicts.
+- **Filtering Mechanism:**
+  - Default update sets are ignored.
+  - Update sets marked as "ignored" are skipped.
+  - If a conflicting update set was ultimately overridden by a later committed update set, it is ignored.
+- **Release Tracking:**
+  - Uses the **release_date** field to determine whether an update set has been committed to the next instance.
+  - When an update set is committed, the next instance is notified via REST, updating the **release_date**.
+
+## 📢 Contributions
+
+Feel free to contribute by submitting pull requests or reporting issues!
+
+## 📜 License
+
+This project is licensed under the MIT License.
 
 [contributors-shield]: https://img.shields.io/github/contributors/AlexAlvarez092/SN-Update-Set-Collision-Detection-Tool.svg?style=for-the-badge
 [contributors-url]: https://github.com/AlexAlvarez092/SN-Update-Set-Collision-Detection-Tool/graphs/contributors
