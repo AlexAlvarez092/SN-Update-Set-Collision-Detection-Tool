@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2025-03-10 11:55:49">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Global">global</application>
+<application_name>Global</application_name>
+<application_scope>global</application_scope>
+<application_version/>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description/>
+<inserted/>
+<name>Collisions tool - Target instance</name>
+<origin_sys_id/>
+<parent display_value=""/>
+<release_date/>
+<remote_base_update_set display_value=""/>
+<remote_parent_id/>
+<remote_sys_id>b61dd4008314661025f1e330ceaad326</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2025-03-10 11:55:48</sys_created_on>
+<sys_id>79620d8c8394661025f1e330ceaad33a</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2025-03-10 11:55:48</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sysevent_script_action_a67105cc8394661025f1e330ceaad3e1</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sysevent_script_action"&gt;&lt;sysevent_script_action action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;condition_script/&gt;&lt;description/&gt;&lt;event_name&gt;collisions_tool.release_date_2_source&lt;/event_name&gt;&lt;name&gt;Release date to source instance&lt;/name&gt;&lt;order&gt;10000&lt;/order&gt;&lt;script&gt;&lt;![CDATA[(function() {
+    try {
+
+        const data = JSON.parse(event.parm1);
+        const sysId = data.sysId;
+        const requestBody = {
+            timestamp: data.timestamp
+        };
+
+        let request = new sn_ws.RESTMessageV2();
+        request.setEndpoint(data.url + 'api/global/v1/local_update_set?sys_id=' + sysId);
+        request.setRequestBody(JSON.stringify(requestBody));
+        request.setHttpMethod('PATH');
+
+        request.setBasicAuth(data.user, data.password);
+        request.setRequestHeader("Accept", "application/json");
+
+        var response = request.execute();
+
+        if (response) {
+            throw 'Lower environment response with error: ' + response;
+        }
+
+    } catch (e) {
+        gs.logError(JSON.stringify(e, null, 2), 'Script Action: Release date to source instance');
+    }
+})();]]&gt;&lt;/script&gt;&lt;synchronous&gt;false&lt;/synchronous&gt;&lt;sys_class_name&gt;sysevent_script_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-10 11:55:25&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;a67105cc8394661025f1e330ceaad3e1&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Release date to source instance&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sysevent_script_action_a67105cc8394661025f1e330ceaad3e1&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-10 11:55:25&lt;/sys_updated_on&gt;&lt;/sysevent_script_action&gt;&lt;sys_es_latest_script action="INSERT_OR_UPDATE"&gt;&lt;id&gt;a67105cc8394661025f1e330ceaad3e1&lt;/id&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-10 11:55:25&lt;/sys_created_on&gt;&lt;sys_id&gt;545289cc8394661025f1e330ceaad366&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-10 11:55:25&lt;/sys_updated_on&gt;&lt;table&gt;sysevent_script_action&lt;/table&gt;&lt;use_es_latest&gt;true&lt;/use_es_latest&gt;&lt;/sys_es_latest_script&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-429251250</payload_hash>
+<remote_update_set display_value="Collisions tool - Target instance">79620d8c8394661025f1e330ceaad33a</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2025-03-10 11:55:48</sys_created_on>
+<sys_id>35620d8c8394661025f1e330ceaad33b</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1957fe8eb640000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2025-03-10 11:55:48</sys_updated_on>
+<table>collisions_tool.release_date_2_source</table>
+<target_name>Release date to source instance</target_name>
+<type>Script Action</type>
+<update_domain>global</update_domain>
+<update_guid>90524500d6d466103643473751df18fe</update_guid>
+<update_guid_history>90524500d6d466103643473751df18fe:-429251250</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sysevent_register_0df0498c8394661025f1e330ceaad39f</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register"><sysevent_register action="INSERT_OR_UPDATE"><caller_access/><derived_priority>100</derived_priority><description>Send the commit date to the source instance after committing a retrieved update set</description><event_name>collisions_tool.release_date_2_source</event_name><fired_by>BR: Post release date to source instance</fired_by><priority>100</priority><queue/><suffix/><sys_class_name>sysevent_register</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-10 11:50:04</sys_created_on><sys_id>0df0498c8394661025f1e330ceaad39f</sys_id><sys_mod_count>0</sys_mod_count><sys_name>collisions_tool.release_date_2_source</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sysevent_register_0df0498c8394661025f1e330ceaad39f</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-10 11:50:04</sys_updated_on><table>sys_remote_update_set</table></sysevent_register></record_update>]]></payload>
+<payload_hash>-236145600</payload_hash>
+<remote_update_set display_value="Collisions tool - Target instance">79620d8c8394661025f1e330ceaad33a</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2025-03-10 11:55:48</sys_created_on>
+<sys_id>3d620d8c8394661025f1e330ceaad33a</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1957fe403440000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2025-03-10 11:55:48</sys_updated_on>
+<table>sys_remote_update_set</table>
+<target_name>collisions_tool.release_date_2_source</target_name>
+<type>Event Registration</type>
+<update_domain>global</update_domain>
+<update_guid>b111058c3e9466108ec9c1255a54cca9</update_guid>
+<update_guid_history>b111058c3e9466108ec9c1255a54cca9:-236145600</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_script_d55f780c8394661025f1e330ceaad376</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script"&gt;&lt;sys_script action="INSERT_OR_UPDATE"&gt;&lt;abort_action&gt;false&lt;/abort_action&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;action_delete&gt;false&lt;/action_delete&gt;&lt;action_insert&gt;false&lt;/action_insert&gt;&lt;action_query&gt;false&lt;/action_query&gt;&lt;action_update&gt;true&lt;/action_update&gt;&lt;active&gt;true&lt;/active&gt;&lt;add_message&gt;false&lt;/add_message&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;change_fields&gt;false&lt;/change_fields&gt;&lt;client_callable&gt;false&lt;/client_callable&gt;&lt;collection&gt;sys_remote_update_set&lt;/collection&gt;&lt;condition/&gt;&lt;description/&gt;&lt;execute_function&gt;false&lt;/execute_function&gt;&lt;filter_condition table="sys_remote_update_set"&gt;stateCHANGESTOcommitted^update_sourceISNOTEMPTY^EQ&lt;item display_value="Committed" endquery="false" field="state" goto="false" newquery="false" operator="CHANGESTO" or="false" value="committed"/&gt;&lt;item endquery="false" field="update_source" goto="false" newquery="false" operator="ISNOTEMPTY" or="false" value=""/&gt;&lt;item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/&gt;&lt;/filter_condition&gt;&lt;is_rest&gt;false&lt;/is_rest&gt;&lt;message/&gt;&lt;name&gt;Post release date to source instance&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;priority&gt;100&lt;/priority&gt;&lt;rest_method/&gt;&lt;rest_method_text/&gt;&lt;rest_service/&gt;&lt;rest_service_text/&gt;&lt;rest_variables/&gt;&lt;role_conditions/&gt;&lt;script&gt;&lt;![CDATA[(function executeRule(current, previous /*null when async*/ ) {
+    const grSource = current.update_source.getRefRecord();
+    if (!grSource.isValidRecord()) return;
+
+    let data = {
+        url: grSource.url.toString(),
+        user: grSource.username.toString(),
+        password: grSource.password.getDecryptedValue(),
+        sysId: current.remote_sys_id.toString()
+    };
+
+    /* 
+		We happen to have realized that for Update Set batches, this Business Rule seems
+		to be executed relatively fast enough that the Retrieved Update Sets record's
+		Committed ("commit_date") field is not populated at the same time its status
+		changes to "Committed". The variable "current" of this Business Rule appears to
+		still retain a snapshot of the record BEFORE the Committed field gets populated,
+		  thus, having this field empty and generating the javascript object ("data") with
+		an empty attribute.
+    
+		Consequently, the approach of fetching again the record via GlideRecord seems to be
+		the most sensible thing to do.
+	*/
+	
+    var retrievedUpdateSet = new GlideRecord("sys_remote_update_set");
+    if (retrievedUpdateSet.get(current.getUniqueValue())) {
+        var commitDate = retrievedUpdateSet.getValue('commit_date');
+        var gdtInstall = new GlideDateTime(commitDate);
+        data.timestamp = gdtInstall.getValue();
+    } else {
+        data.timestamp = "";
+    }
+
+    gs.eventQueue('collisions_tool.release_date_2_source', current, JSON.stringify(data));
+})(current, previous);]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-10 11:48:30&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;d55f780c8394661025f1e330ceaad376&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;Post release date to source instance&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_d55f780c8394661025f1e330ceaad376&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-10 11:52:56&lt;/sys_updated_on&gt;&lt;template/&gt;&lt;when&gt;after&lt;/when&gt;&lt;/sys_script&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=d55f780c8394661025f1e330ceaad376"/&gt;&lt;sys_es_latest_script action="INSERT_OR_UPDATE"&gt;&lt;id&gt;d55f780c8394661025f1e330ceaad376&lt;/id&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-10 11:48:30&lt;/sys_created_on&gt;&lt;sys_id&gt;bab0050c8394661025f1e330ceaad334&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-10 11:48:30&lt;/sys_updated_on&gt;&lt;table&gt;sys_script&lt;/table&gt;&lt;use_es_latest&gt;true&lt;/use_es_latest&gt;&lt;/sys_es_latest_script&gt;&lt;/record_update&gt;</payload>
+<payload_hash>706988973</payload_hash>
+<remote_update_set display_value="Collisions tool - Target instance">79620d8c8394661025f1e330ceaad33a</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2025-03-10 11:55:48</sys_created_on>
+<sys_id>f5620d8c8394661025f1e330ceaad33b</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1957fe6a5580000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2025-03-10 11:55:48</sys_updated_on>
+<table>sys_remote_update_set</table>
+<target_name>Post release date to source instance</target_name>
+<type>Business Rule</type>
+<update_domain>global</update_domain>
+<update_guid>f3b145cc18946610266eb2c7ccbd1f02</update_guid>
+<update_guid_history>f3b145cc18946610266eb2c7ccbd1f02:706988973,4fb0058c4f946610b10b14ab0a5fc6a2:1113288884</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>
